@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galaxy Hand Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <canvas id="particleCanvas"></canvas>
+  <video id="webcam" autoplay playsinline></video>
+  <div id="status">Initializing hand tracking...</div>
+  <div id="gesture-label"></div>
+
+  <!-- MediaPipe Hands via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js"></script>
+
+  <!-- App logic -->
+  <script src="app.js"></script>
+
+</body>
+</html>
