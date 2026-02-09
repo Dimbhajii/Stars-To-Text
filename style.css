@@ -9,6 +9,10 @@ body {
   overflow: hidden;
   background: #000;
   font-family: 'Segoe UI', Arial, sans-serif;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* ─── Particle Canvas ───────────────────────────────────────────── */
@@ -64,4 +68,28 @@ video#webcam {
   width: 240px;
   text-shadow: 0 0 8px rgba(100, 140, 255, 0.5);
   letter-spacing: 0.5px;
+}
+
+/* ─── Mobile Responsive ────────────────────────────────────────── */
+@media (max-width: 600px) {
+  video#webcam {
+    width: 120px;
+    height: 90px;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 8px;
+  }
+
+  #gesture-label {
+    bottom: 110px;
+    right: 10px;
+    width: 140px;
+    font-size: 11px;
+  }
+
+  #status {
+    font-size: 12px;
+    top: 12px;
+    max-width: 90vw;
+  }
 }

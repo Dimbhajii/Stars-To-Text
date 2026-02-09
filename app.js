@@ -176,11 +176,37 @@ function getTextPixels(text, fontSize) {
   offCtx.font         = `bold ${fontSize}px 'Segoe UI', Arial, sans-serif`;
   offCtx.textAlign    = 'center';
   offCtx.textBaseline = 'middle';
-  offCtx.fillText(text, W / 2, H / 2);
+
+  // On narrow screens, wrap long text across multiple lines
+  const maxWidth = W * 0.85;
+  const measured = offCtx.measureText(text);
+  if (measured.width > maxWidth && text.includes(' ')) {
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    for (const word of words) {
+      const test = line ? line + ' ' + word : word;
+      if (offCtx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    if (line) lines.push(line);
+    const lineHeight = fontSize * 1.2;
+    const startY = H / 2 - ((lines.length - 1) * lineHeight) / 2;
+    for (let i = 0; i < lines.length; i++) {
+      offCtx.fillText(lines[i], W / 2, startY + i * lineHeight);
+    }
+  } else {
+    offCtx.fillText(text, W / 2, H / 2);
+  }
 
   const imageData = offCtx.getImageData(0, 0, W, H);
   const pixels    = [];
-  const step      = 6; // sampling grid spacing
+  const isMobile  = W < 600;
+  const step      = isMobile ? 4 : 6; // denser sampling on mobile
 
   for (let y = 0; y < H; y += step) {
     for (let x = 0; x < W; x += step) {
@@ -210,8 +236,14 @@ let gestureCounter   = 0;
 
 const GESTURE_HOLD_FRAMES = 8; // debounce threshold
 
-for (let i = 0; i < CONFIG.particleCount; i++) particles.push(new Particle());
-for (let i = 0; i < 200; i++) stars.push(new Star());
+const isMobileDevice = window.innerWidth < 600;
+const pCount = isMobileDevice ? 800 : CONFIG.particleCount;
+const sCount = isMobileDevice ? 120 : 200;
+if (isMobileDevice) {
+  CONFIG.repelRadius = 80;
+}
+for (let i = 0; i < pCount; i++) particles.push(new Particle());
+for (let i = 0; i < sCount; i++) stars.push(new Star());
 
 // ─── Gesture Detection Helpers ──────────────────────────────────────
 function isFingerUp(landmarks, finger) {
@@ -256,7 +288,8 @@ function detectGesture(landmarks) {
 
 // ─── Assign Particles to Text Positions ─────────────────────────────
 function assignTextToParticles(text) {
-  const fontSize = Math.min(W * 0.08, 100);
+  const isMobile = W < 600;
+  const fontSize = isMobile ? Math.min(W * 0.14, 60) : Math.min(W * 0.08, 100);
   const pixels   = getTextPixels(text, fontSize);
 
   // Clear previous assignments
@@ -320,13 +353,14 @@ function drawBackground() {
 
   // "Nadim" top-left label
   ctx.save();
-  ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+  const labelSize = W < 600 ? 18 : 28;
+  ctx.font = `bold ${labelSize}px "Segoe UI", Arial, sans-serif`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.shadowColor = 'rgba(255, 255, 255, 0.6)';
   ctx.shadowBlur = 14;
   ctx.fillStyle = 'rgba(240, 240, 255, 0.9)';
-  ctx.fillText('Nadim', 24, 20);
+  ctx.fillText('Nadim', W < 600 ? 14 : 24, W < 600 ? 12 : 20);
   ctx.shadowBlur = 0;
   ctx.restore();
 }
