@@ -252,17 +252,31 @@ function isFingerUp(landmarks, finger) {
   return landmarks[tips[finger]].y < landmarks[pips[finger]].y;
 }
 
+function isThumbUp(landmarks) {
+  const thumbTip = landmarks[4];
+  const thumbIp  = landmarks[3];
+  const thumbMcp = landmarks[2];
+  // Thumb is extended if tip is far from MCP compared to IP
+  const tipDist = Math.hypot(thumbTip.x - thumbMcp.x, thumbTip.y - thumbMcp.y);
+  const ipDist  = Math.hypot(thumbIp.x - thumbMcp.x, thumbIp.y - thumbMcp.y);
+  return tipDist > ipDist * 1.2;
+}
+
 function detectGesture(landmarks) {
   const indexUp  = isFingerUp(landmarks, 'index');
   const middleUp = isFingerUp(landmarks, 'middle');
   const ringUp   = isFingerUp(landmarks, 'ring');
   const pinkyUp  = isFingerUp(landmarks, 'pinky');
+  const thumbUp  = isThumbUp(landmarks);
 
   // OK sign (👌): thumb tip touching index tip, middle + ring + pinky up
   const thumbTip = landmarks[4];
   const indexTip = landmarks[8];
   const okDist = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
   if (okDist < 0.06 && middleUp && ringUp && pinkyUp) return 'ok';
+
+  // Thumb + index only: "you suck"
+  if (thumbUp && indexUp && !middleUp && !ringUp && !pinkyUp) return 'thumbindex';
 
   // Fist: all fingers down
   if (!indexUp && !middleUp && !ringUp && !pinkyUp) return 'fist';
@@ -403,7 +417,7 @@ function animate() {
 
     if (gestureCounter >= GESTURE_HOLD_FRAMES) {
       if (pendingGesture !== 'none') {
-        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'HEY', flip: 'FUCK U', ok: 'LORA', crossed: '' };
+        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'HEY', flip: 'FUCK U', ok: 'LORA', crossed: '', thumbindex: 'YOU SUCK' };
         const newText = gestureTexts[pendingGesture] || 'Hey';
         if (newText !== gestureText || !textMode) {
           gestureText = newText;
@@ -468,6 +482,8 @@ hands.onResults((results) => {
       gestureLabelEl.textContent = '🤞 Crossed fingers detected';
     } else if (currentGesture === 'ok') {
       gestureLabelEl.textContent = '👌 OK sign detected';
+    } else if (currentGesture === 'thumbindex') {
+      gestureLabelEl.textContent = '👆 Thumb + Index detected';
     } else if (currentGesture === 'fist') {
       gestureLabelEl.textContent = '✊ Fist detected';
     } else if (currentGesture === 'flip') {
