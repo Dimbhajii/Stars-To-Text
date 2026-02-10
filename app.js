@@ -403,7 +403,7 @@ function animate() {
 
     if (gestureCounter >= GESTURE_HOLD_FRAMES) {
       if (pendingGesture !== 'none') {
-        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'Hey', flip: 'fuck u', ok: 'Lora', crossed: '' };
+        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'HEY', flip: 'FUCK U', ok: 'LORA', crossed: '' };
         const newText = gestureTexts[pendingGesture] || 'Hey';
         if (newText !== gestureText || !textMode) {
           gestureText = newText;
