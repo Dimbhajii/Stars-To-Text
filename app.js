@@ -278,6 +278,9 @@ function detectGesture(landmarks) {
   // Thumb + index only: "you suck"
   if (thumbUp && indexUp && !middleUp && !ringUp && !pinkyUp) return 'thumbindex';
 
+  // Pinky only
+  if (!indexUp && !middleUp && !ringUp && pinkyUp) return 'pinky';
+
   // Fist: all fingers down
   if (!indexUp && !middleUp && !ringUp && !pinkyUp) return 'fist';
 
@@ -417,7 +420,7 @@ function animate() {
 
     if (gestureCounter >= GESTURE_HOLD_FRAMES) {
       if (pendingGesture !== 'none') {
-        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'HEY', flip: 'FUCK U', ok: 'LORA', crossed: '', thumbindex: 'YOU SUCK' };
+        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'HEY', flip: 'FUCK U', ok: 'LORA', crossed: '', thumbindex: 'YOU SUCK', pinky: 'SHAMSA' };
         const newText = gestureTexts[pendingGesture] || 'Hey';
         if (newText !== gestureText || !textMode) {
           gestureText = newText;
@@ -484,6 +487,8 @@ hands.onResults((results) => {
       gestureLabelEl.textContent = '👌 OK sign detected';
     } else if (currentGesture === 'thumbindex') {
       gestureLabelEl.textContent = '👆 Thumb + Index detected';
+    } else if (currentGesture === 'pinky') {
+      gestureLabelEl.textContent = '🤙 Pinky detected';
     } else if (currentGesture === 'fist') {
       gestureLabelEl.textContent = '✊ Fist detected';
     } else if (currentGesture === 'flip') {
