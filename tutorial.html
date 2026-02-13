@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASL Tutorial — Galaxy Hand Tracker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #06060f;
+      color: #c8d4f0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ─── Background stars ───────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(40, 25, 90, 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 65%, rgba(15, 40, 90, 0.2) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Back Button ────────────────────────────────────────── */
+    .back-link {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      color: rgba(150, 180, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #fff; }
+    .back-link .arrow {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    /* ─── Main Container ─────────────────────────────────────── */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 700;
+      color: #e8ecff;
+      text-align: center;
+      margin-bottom: 12px;
+      text-shadow: 0 0 30px rgba(100, 140, 255, 0.3);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: rgba(160, 180, 220, 0.8);
+      margin-bottom: 50px;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── How To Section ─────────────────────────────────────── */
+    .section-title {
+      font-size: 22px;
+      color: #dce2ff;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(100, 140, 255, 0.15);
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 50px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: rgba(100, 140, 255, 0.06);
+      border: 1px solid rgba(100, 140, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(100, 140, 255, 0.15);
+      border: 1px solid rgba(100, 140, 255, 0.3);
+      color: rgba(180, 200, 255, 0.9);
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-text {
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    /* ─── Signs Grid ─────────────────────────────────────────── */
+    .signs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    .sign-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(100, 140, 255, 0.12);
+      border-radius: 12px;
+      padding: 20px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sign-card:hover {
+      border-color: rgba(100, 140, 255, 0.35);
+      background: rgba(100, 140, 255, 0.06);
+    }
+
+    .sign-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .sign-letter {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(100, 140, 255, 0.12);
+      border: 1px solid rgba(100, 140, 255, 0.25);
+      color: #e0e8ff;
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sign-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(200, 215, 255, 0.9);
+    }
+
+    .sign-desc {
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(160, 175, 210, 0.85);
+    }
+
+    /* ─── Unsupported & Tips ─────────────────────────────────── */
+    .info-box {
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin-bottom: 50px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .info-box.warning {
+      background: rgba(255, 180, 100, 0.06);
+      border: 1px solid rgba(255, 180, 100, 0.15);
+      color: rgba(255, 210, 160, 0.9);
+    }
+
+    .info-box.tips {
+      background: rgba(100, 200, 140, 0.06);
+      border: 1px solid rgba(100, 200, 140, 0.12);
+      color: rgba(170, 220, 190, 0.9);
+    }
+
+    .info-box strong {
+      color: inherit;
+      font-weight: 600;
+    }
+
+    .tips-list {
+      list-style: none;
+      padding: 0;
+    }
+    .tips-list li {
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .tips-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(100, 200, 140, 0.4);
+    }
+
+    /* ─── Mobile ─────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .container { padding: 70px 16px 40px; }
+      h1 { font-size: 28px; }
+      .subtitle { font-size: 14px; }
+      .signs-grid { grid-template-columns: 1fr; }
+      .back-link { top: 16px; left: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-link"><span class="arrow">&larr;</span> Back to App</a>
+
+  <div class="container">
+    <h1>ASL Fingerspelling Guide</h1>
+    <p class="subtitle">Learn the hand signs recognized by Galaxy Hand Tracker. Hold a sign steady to spell out words with particles. Make a fist to clear.</p>
+
+    <!-- How to Use -->
+    <h2 class="section-title">How to Use</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-text">Allow camera access and show your hand to the webcam</span>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <span class="step-text">Form an ASL letter sign (see below) and hold it steady</span>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <span class="step-text">After about half a second, the letter is added to your word</span>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <span class="step-text">Lower your hand briefly, then sign the next letter</span>
+      </div>
+      <div class="step">
+        <span class="step-num">5</span>
+        <span class="step-text">Make a fist to clear the word and start over</span>
+      </div>
+    </div>
+
+    <!-- Supported Letters -->
+    <h2 class="section-title">Supported Letters (19 of 26)</h2>
+    <div class="signs-grid">
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">B</div>
+          <div class="sign-name">Flat Hand, Thumb Tucked</div>
+        </div>
+        <div class="sign-desc">All four fingers extended straight up and held together. Thumb folds across the palm, not sticking out.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">C</div>
+          <div class="sign-name">Curved C Shape</div>
+        </div>
+        <div class="sign-desc">Curve all fingers and thumb as if holding a can. Keep a visible gap between the thumb and index finger — don't let them touch.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">D</div>
+          <div class="sign-name">Index Up, Circle Below</div>
+        </div>
+        <div class="sign-desc">Point your index finger straight up. Curl the middle, ring, and pinky fingers down so their tips touch the thumb, forming a small circle at the base.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">F</div>
+          <div class="sign-name">OK Circle, Three Fingers Up</div>
+        </div>
+        <div class="sign-desc">Touch the tips of your thumb and index finger to form a circle (like an OK sign). Extend the middle, ring, and pinky fingers straight up.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">G</div>
+          <div class="sign-name">Index + Thumb Sideways</div>
+        </div>
+        <div class="sign-desc">Point your index finger and thumb horizontally to the side, parallel to each other. Curl the other three fingers into the palm.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">H</div>
+          <div class="sign-name">Two Fingers Sideways</div>
+        </div>
+        <div class="sign-desc">Extend your index and middle fingers horizontally (pointing sideways). Keep them together. Curl the ring, pinky, and thumb.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">I</div>
+          <div class="sign-name">Pinky Only</div>
+        </div>
+        <div class="sign-desc">Extend only the pinky finger straight up. Curl all other fingers and the thumb into a fist.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">K</div>
+          <div class="sign-name">Index Up, Thumb Between</div>
+        </div>
+        <div class="sign-desc">Point the index finger up and angle the middle finger forward. Place the thumb between the index and middle fingers. Curl the ring and pinky.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">L</div>
+          <div class="sign-name">L Shape</div>
+        </div>
+        <div class="sign-desc">Point your index finger straight up and extend your thumb out to the side, forming an L shape. Curl the other three fingers in.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">O</div>
+          <div class="sign-name">Closed Circle</div>
+        </div>
+        <div class="sign-desc">Bring all your fingertips together to touch the thumb tip, forming a closed O or oval shape. No fingers should be extended.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">P</div>
+          <div class="sign-name">K Shape Pointing Down</div>
+        </div>
+        <div class="sign-desc">Make the same hand shape as K (index up, middle forward, thumb between), then rotate your hand so the fingers point downward.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">Q</div>
+          <div class="sign-name">Thumb + Index Down</div>
+        </div>
+        <div class="sign-desc">Point your thumb and index finger straight downward. Curl the other fingers into the palm. Like a G but pointing down.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">R</div>
+          <div class="sign-name">Crossed Fingers</div>
+        </div>
+        <div class="sign-desc">Extend the index and middle fingers upward and cross the index over the middle (like a "fingers crossed" gesture). Curl the ring and pinky.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">U</div>
+          <div class="sign-name">Two Fingers Together</div>
+        </div>
+        <div class="sign-desc">Extend the index and middle fingers straight up, held close together (touching or nearly touching). Curl the ring and pinky.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">V</div>
+          <div class="sign-name">Peace Sign</div>
+        </div>
+        <div class="sign-desc">Extend the index and middle fingers upward and spread them apart (victory/peace sign). Curl the ring and pinky.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">W</div>
+          <div class="sign-name">Three Fingers Spread</div>
+        </div>
+        <div class="sign-desc">Extend the index, middle, and ring fingers upward and spread them apart. Curl the pinky down and tuck the thumb.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">X</div>
+          <div class="sign-name">Hooked Index</div>
+        </div>
+        <div class="sign-desc">Extend the index finger from the fist but bend the tip into a hook shape (curl the top knuckle). Keep all other fingers in a fist.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">Y</div>
+          <div class="sign-name">Hang Loose / Shaka</div>
+        </div>
+        <div class="sign-desc">Extend the thumb and pinky outward. Curl the index, middle, and ring fingers into the palm.</div>
+      </div>
+
+      <div class="sign-card">
+        <div class="sign-header">
+          <div class="sign-letter">Z</div>
+          <div class="sign-name">Trace a Z in the Air</div>
+        </div>
+        <div class="sign-desc">Point your index finger up (fist with index extended), then draw a Z shape in the air: move right, then diagonally down-left, then right again.</div>
+      </div>
+
+    </div>
+
+    <!-- Not Supported -->
+    <h2 class="section-title">Not Supported</h2>
+    <div class="info-box warning">
+      <strong>Letters A, E, J, M, N, S, T</strong> are not detectable. These are all closed-fist variations where the only difference is where the thumb is placed on or inside the fist. Camera-based hand tracking cannot reliably distinguish these subtle differences. Try spelling around them or using alternative words.
+    </div>
+
+    <!-- Tips -->
+    <h2 class="section-title">Tips for Best Results</h2>
+    <div class="info-box tips">
+      <ul class="tips-list">
+        <li>Face the camera with good, even lighting on your hand</li>
+        <li>Keep your full hand visible within the webcam frame</li>
+        <li>Hold each sign steady for about half a second to register</li>
+        <li>Lower your hand briefly between letters, especially to repeat the same letter twice</li>
+        <li>Make a fist to clear the spelled word and start a new one</li>
+        <li>The fist also pushes particles around as a fun bonus interaction</li>
+        <li>If a letter keeps being misread, try adjusting your hand angle slightly</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>

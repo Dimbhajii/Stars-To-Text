@@ -70,6 +70,32 @@ video#webcam {
   letter-spacing: 0.5px;
 }
 
+/* ─── Tutorial Link ────────────────────────────────────────────── */
+#tutorial-link {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(100, 140, 255, 0.15);
+  border: 1px solid rgba(100, 140, 255, 0.4);
+  color: rgba(180, 200, 255, 0.9);
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 20;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+#tutorial-link:hover {
+  background: rgba(100, 140, 255, 0.3);
+  border-color: rgba(100, 140, 255, 0.7);
+}
+
 /* ─── Mobile Responsive ────────────────────────────────────────── */
 @media (max-width: 600px) {
   video#webcam {

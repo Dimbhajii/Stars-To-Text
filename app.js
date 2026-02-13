@@ -234,7 +234,18 @@ let textMode         = false;
 let pendingGesture   = 'none';
 let gestureCounter   = 0;
 
-const GESTURE_HOLD_FRAMES = 8; // debounce threshold
+const GESTURE_HOLD_FRAMES = 10; // debounce threshold
+
+// ─── Spelling Buffer State ──────────────────────────────────────────
+let spellingBuffer      = '';
+let lastConfirmedLetter = '';
+let letterHoldFrames    = 0;
+const LETTER_CONFIRM_FRAMES = 15; // hold ~0.5s to confirm a letter
+const ASL_LETTERS = {
+  B:'B', C:'C', D:'D', F:'F', G:'G', H:'H', I:'I', K:'K',
+  L:'L', O:'O', P:'P', Q:'Q', R:'R', U:'U', V:'V', W:'W',
+  X:'X', Y:'Y', Z:'Z',
+};
 
 const isMobileDevice = window.innerWidth < 600;
 const pCount = isMobileDevice ? 800 : CONFIG.particleCount;
@@ -262,43 +273,180 @@ function isThumbUp(landmarks) {
   return tipDist > ipDist * 1.2;
 }
 
-function detectGesture(landmarks) {
+// ─── ASL Detection Helpers ──────────────────────────────────────────
+function landmarkDist(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function isFingerHooked(landmarks, finger) {
+  const mcps = { index: 5, middle: 9, ring: 13, pinky: 17 };
+  const dips = { index: 7, middle: 11, ring: 15, pinky: 19 };
+  const tips = { index: 8, middle: 12, ring: 16, pinky: 20 };
+  const mcp = landmarks[mcps[finger]];
+  const dip = landmarks[dips[finger]];
+  const tip = landmarks[tips[finger]];
+  // Finger extends from hand but DIP is bent (hook shape)
+  return dip.y < mcp.y && tip.y > dip.y;
+}
+
+function isFingerPartiallyCurled(landmarks, finger) {
+  const mcps = { index: 5, middle: 9, ring: 13, pinky: 17 };
+  const pips = { index: 6, middle: 10, ring: 14, pinky: 18 };
+  const tips = { index: 8, middle: 12, ring: 16, pinky: 20 };
+  const mcp = landmarks[mcps[finger]];
+  const pip = landmarks[pips[finger]];
+  const tip = landmarks[tips[finger]];
+  return tip.y > pip.y && tip.y < mcp.y;
+}
+
+function isFingerHorizontal(landmarks, finger) {
+  const mcps = { index: 5, middle: 9, ring: 13, pinky: 17 };
+  const tips = { index: 8, middle: 12, ring: 16, pinky: 20 };
+  const mcp = landmarks[mcps[finger]];
+  const tip = landmarks[tips[finger]];
+  const dx = Math.abs(tip.x - mcp.x);
+  const dy = Math.abs(tip.y - mcp.y);
+  return dx > dy * 1.5;
+}
+
+function isFingerPointingDown(landmarks, finger) {
+  const mcps = { index: 5, middle: 9, ring: 13, pinky: 17 };
+  const tips = { index: 8, middle: 12, ring: 16, pinky: 20 };
+  return landmarks[tips[finger]].y > landmarks[mcps[finger]].y + 0.05;
+}
+
+function isThumbTuckedAcrossPalm(landmarks) {
+  const thumbTip  = landmarks[4];
+  const middleMcp = landmarks[9];
+  const ringMcp   = landmarks[13];
+  return landmarkDist(thumbTip, middleMcp) < 0.08
+      || landmarkDist(thumbTip, ringMcp) < 0.08;
+}
+
+// ─── Z Motion Tracking ──────────────────────────────────────────────
+const MOTION_BUFFER_SIZE = 20;
+const indexTipHistory = [];
+
+function trackIndexMotion(landmarks) {
+  indexTipHistory.push({ x: landmarks[8].x, y: landmarks[8].y });
+  if (indexTipHistory.length > MOTION_BUFFER_SIZE) indexTipHistory.shift();
+}
+
+function detectZMotion() {
+  if (indexTipHistory.length < 12) return false;
+  const recent = indexTipHistory.slice(-12);
+  const seg1 = recent.slice(0, 4);
+  const seg2 = recent.slice(4, 8);
+  const seg3 = recent.slice(8, 12);
+  const s1dx = seg1[3].x - seg1[0].x;
+  const s2dx = seg2[3].x - seg2[0].x;
+  const s2dy = seg2[3].y - seg2[0].y;
+  const s3dx = seg3[3].x - seg3[0].x;
+  return s1dx > 0.03 && s2dx < -0.03 && s2dy > 0.02 && s3dx > 0.03;
+}
+
+// ─── ASL Letter Detection ───────────────────────────────────────────
+function detectASLLetter(landmarks) {
   const indexUp  = isFingerUp(landmarks, 'index');
   const middleUp = isFingerUp(landmarks, 'middle');
   const ringUp   = isFingerUp(landmarks, 'ring');
   const pinkyUp  = isFingerUp(landmarks, 'pinky');
   const thumbUp  = isThumbUp(landmarks);
 
-  // OK sign (👌): thumb tip touching index tip, middle + ring + pinky up
-  const thumbTip = landmarks[4];
-  const indexTip = landmarks[8];
-  const okDist = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
-  if (okDist < 0.06 && middleUp && ringUp && pinkyUp) return 'ok';
+  const thumbTip  = landmarks[4];
+  const indexTip  = landmarks[8];
+  const middleTip = landmarks[12];
+  const ringTip   = landmarks[16];
 
-  // Thumb + index only: "you suck"
-  if (thumbUp && indexUp && !middleUp && !ringUp && !pinkyUp) return 'thumbindex';
+  const thumbIndexDist  = landmarkDist(thumbTip, indexTip);
+  const thumbMiddleDist = landmarkDist(thumbTip, middleTip);
+  const indexMiddleDist = landmarkDist(indexTip, middleTip);
 
-  // Pinky only
-  if (!indexUp && !middleUp && !ringUp && pinkyUp) return 'pinky';
+  trackIndexMotion(landmarks);
 
-  // Fist: all fingers down
-  if (!indexUp && !middleUp && !ringUp && !pinkyUp) return 'fist';
+  // ── Priority 1: Specific landmark relationships ──
 
-  // Middle finger only: middle up, all others down
-  if (!indexUp && middleUp && !ringUp && !pinkyUp) return 'flip';
+  // F: thumb+index circle, three fingers up
+  if (thumbIndexDist < 0.06 && middleUp && ringUp && pinkyUp) return 'F';
 
-  // Index + middle up, ring + pinky down → crossed fingers or peace
-  if (indexUp && middleUp && !ringUp && !pinkyUp) {
-    const midTip = landmarks[12];
-    const crossDist = Math.hypot(indexTip.x - midTip.x, indexTip.y - midTip.y);
-    // Crossed fingers (🤞): tips very close together
-    if (crossDist < 0.05) return 'crossed';
-    // Peace / victory: tips spread apart
-    return 'love';
+  // D: index up, thumb touches middle fingertip
+  if (indexUp && !middleUp && !ringUp && !pinkyUp && thumbMiddleDist < 0.06) return 'D';
+
+  // O: all fingertips near thumb (closed circle)
+  if (!indexUp && !middleUp && !ringUp && !pinkyUp
+      && thumbIndexDist < 0.06
+      && thumbMiddleDist < 0.07
+      && landmarkDist(thumbTip, ringTip) < 0.08) return 'O';
+
+  // R: index+middle crossed (tips very close)
+  if (indexUp && middleUp && !ringUp && !pinkyUp && indexMiddleDist < 0.04) return 'R';
+
+  // X: index hooked, others down
+  if (isFingerHooked(landmarks, 'index') && !middleUp && !ringUp && !pinkyUp && !thumbUp) return 'X';
+
+  // ── Priority 2: Finger count + thumb ──
+
+  // Y: thumb + pinky only
+  if (thumbUp && !indexUp && !middleUp && !ringUp && pinkyUp) return 'Y';
+
+  // I: pinky only, no thumb
+  if (!thumbUp && !indexUp && !middleUp && !ringUp && pinkyUp) return 'I';
+
+  // L: index up + thumb extended sideways
+  if (indexUp && !middleUp && !ringUp && !pinkyUp && thumbUp) {
+    const thumbLateral = Math.abs(thumbTip.x - landmarks[2].x);
+    if (thumbLateral > 0.06) return 'L';
   }
 
-  // Four fingers up: all except thumb
-  if (indexUp && middleUp && ringUp && pinkyUp) return 'hey';
+  // K: index up, middle partially extended, thumb near middle base
+  if (indexUp && !ringUp && !pinkyUp) {
+    const middlePip = landmarks[10];
+    const middlePartial = middleTip.y < middlePip.y;
+    const thumbNearMidBase = landmarkDist(thumbTip, landmarks[9]) < 0.06;
+    if (middlePartial && thumbNearMidBase && thumbTip.y < landmarks[9].y) return 'K';
+  }
+
+  // W: index+middle+ring up, pinky down
+  if (indexUp && middleUp && ringUp && !pinkyUp) return 'W';
+
+  // ── Priority 3: Two-finger variants (V vs U vs H) ──
+  if (indexUp && middleUp && !ringUp && !pinkyUp) {
+    if (isFingerHorizontal(landmarks, 'index') && isFingerHorizontal(landmarks, 'middle')) return 'H';
+    if (indexMiddleDist > 0.07) return 'V';
+    return 'U';
+  }
+
+  // ── Priority 4: Four/five finger letters ──
+  if (indexUp && middleUp && ringUp && pinkyUp) {
+    if (isThumbTuckedAcrossPalm(landmarks)) return 'B';
+    return 'B'; // default to B when all 4 fingers up
+  }
+
+  // ── Priority 5: Orientation-dependent letters ──
+
+  // G: index + thumb horizontal
+  if (!middleUp && !ringUp && !pinkyUp && isFingerHorizontal(landmarks, 'index') && thumbUp) return 'G';
+
+  // P: K-shape pointing down
+  if (isFingerPointingDown(landmarks, 'index') && isFingerPointingDown(landmarks, 'middle')
+      && !ringUp && !pinkyUp && thumbUp) return 'P';
+
+  // Q: index+thumb pointing down
+  if (isFingerPointingDown(landmarks, 'index') && !middleUp && !ringUp && !pinkyUp
+      && landmarks[4].y > landmarks[0].y) return 'Q';
+
+  // C: fingers partially curled, gap between thumb and index
+  if (!indexUp && !middleUp && !ringUp && !pinkyUp) {
+    const partialIndex  = isFingerPartiallyCurled(landmarks, 'index');
+    const partialMiddle = isFingerPartiallyCurled(landmarks, 'middle');
+    if (partialIndex && partialMiddle && thumbIndexDist > 0.05 && thumbIndexDist < 0.15) return 'C';
+  }
+
+  // Z: index only + zigzag motion
+  if (indexUp && !middleUp && !ringUp && !pinkyUp && !thumbUp && detectZMotion()) return 'Z';
+
+  // ── Fist (A/S/T — indistinguishable) ──
+  if (!indexUp && !middleUp && !ringUp && !pinkyUp) return 'fist';
 
   return 'none';
 }
@@ -419,23 +567,42 @@ function animate() {
     }
 
     if (gestureCounter >= GESTURE_HOLD_FRAMES) {
-      if (pendingGesture !== 'none') {
-        const gestureTexts = { love: 'I LOVE YOU 💙', hey: 'HEY', flip: 'FUCK U', ok: 'LORA', crossed: '', thumbindex: 'YOU SUCK', pinky: 'SHAMSA' };
-        const newText = gestureTexts[pendingGesture] || 'Hey';
-        if (newText !== gestureText || !textMode) {
-          gestureText = newText;
-          textMode    = true;
-          assignTextToParticles(gestureText);
+      displayedGesture = pendingGesture;
+
+      if (pendingGesture === 'fist') {
+        // Fist clears spelling buffer
+        spellingBuffer      = '';
+        lastConfirmedLetter = '';
+        letterHoldFrames    = 0;
+        textMode            = false;
+      } else if (pendingGesture in ASL_LETTERS) {
+        // Start tracking this letter for confirmation
+        if (pendingGesture !== lastConfirmedLetter) {
+          letterHoldFrames = 0;
         }
       } else {
         textMode = false;
-        // particles scatter on their own via textAlpha fade
       }
-      displayedGesture = pendingGesture;
     }
   } else {
     pendingGesture = currentGesture;
     gestureCounter = 0;
+  }
+
+  // Spelling buffer: confirm letter after holding it
+  if (displayedGesture in ASL_LETTERS) {
+    letterHoldFrames++;
+    if (letterHoldFrames === LETTER_CONFIRM_FRAMES) {
+      spellingBuffer += ASL_LETTERS[displayedGesture];
+      lastConfirmedLetter = displayedGesture;
+      gestureText = spellingBuffer;
+      textMode    = true;
+      assignTextToParticles(gestureText);
+    }
+  } else if (displayedGesture === 'none') {
+    // Brief pause resets letter tracking (allows repeating same letter)
+    lastConfirmedLetter = '';
+    letterHoldFrames    = 0;
   }
 
   // Update & draw particles
@@ -470,7 +637,7 @@ hands.onResults((results) => {
     const landmarks = results.multiHandLandmarks[0];
 
     hasHand = true;
-    currentGesture = detectGesture(landmarks);
+    currentGesture = detectASLLetter(landmarks);
 
     // Fist position uses middle of hand (landmark 9 = middle finger base)
     isFist = currentGesture === 'fist';
@@ -481,22 +648,11 @@ hands.onResults((results) => {
     }
 
     // UI label
-    if (currentGesture === 'crossed') {
-      gestureLabelEl.textContent = '🤞 Crossed fingers detected';
-    } else if (currentGesture === 'ok') {
-      gestureLabelEl.textContent = '👌 OK sign detected';
-    } else if (currentGesture === 'thumbindex') {
-      gestureLabelEl.textContent = '👆 Thumb + Index detected';
-    } else if (currentGesture === 'pinky') {
-      gestureLabelEl.textContent = '🤙 Pinky detected';
+    if (currentGesture in ASL_LETTERS) {
+      const bufferDisplay = spellingBuffer ? ` | Spelled: ${spellingBuffer}` : '';
+      gestureLabelEl.textContent = `ASL Letter: ${currentGesture}${bufferDisplay}`;
     } else if (currentGesture === 'fist') {
-      gestureLabelEl.textContent = '✊ Fist detected';
-    } else if (currentGesture === 'flip') {
-      gestureLabelEl.textContent = '🖕 Middle finger detected';
-    } else if (currentGesture === 'love') {
-      gestureLabelEl.textContent = '✌️ Peace / Victory detected';
-    } else if (currentGesture === 'hey') {
-      gestureLabelEl.textContent = '🖐️ Four fingers detected';
+      gestureLabelEl.textContent = 'Fist (clear buffer)';
     } else {
       gestureLabelEl.textContent = 'Tracking hand...';
     }
