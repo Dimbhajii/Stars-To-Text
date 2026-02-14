@@ -244,7 +244,6 @@ const GESTURE_SIGNS = {
   i_love_you:     'I LOVE YOU',
   thank_you:      'THANK YOU',
   what_do_u_want: 'WHAT DO YOU WANT?',
-  perfect:        'PERFECT',
   okay:           'OKAY!',
   fuck_u:         'FUCK U',
   u_suck:         'U SUCK',
@@ -375,19 +374,11 @@ function detectOneHandSign(lm) {
   // ✌️ OKAY: peace sign — index + middle up, ring + pinky down
   if (indexUp && middleUp && !ringUp && !pinkyUp) return 'okay';
 
-  // 👍 PERFECT: thumbs up — thumb extended, all four fingers curled
-  if (fist && thumbOut) return 'perfect';
-
   // 🤙 U SUCK: L shape — index + thumb out, others down
   if (indexUp && !middleUp && !ringUp && !pinkyUp && thumbOut) return 'u_suck';
 
-  // 👋 HELLO: open hand waving (side-to-side oscillation)
-  if (open && detectOscillationX(0, 18)) return 'hello';
-  // Or salute-like outward motion from temple area
-  if (open) {
-    const m = getMotion(0, 10);
-    if (m && wrist.y < 0.4 && Math.abs(m.dx) > 0.04) return 'hello';
-  }
+  // ☝️ HELLO: one index finger only (no thumb)
+  if (indexUp && !middleUp && !ringUp && !pinkyUp && !thumbOut) return 'hello';
 
   // 🙏 THANK YOU: open hand near chin/face, moving downward/outward
   if (open) {
