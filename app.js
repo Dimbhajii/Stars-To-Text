@@ -355,7 +355,6 @@ function detectOneHandSign(lm) {
   const thumbOut = isThumbUp(lm);
   const open     = allFingersUp(lm);
   const fist     = allFingersDown(lm);
-  const wrist    = lm[0];
 
   // 🤌 WHAT DO YOU WANT: all fingertips bunched near thumb tip
   const pinchThreshold = 0.07;
@@ -383,8 +382,8 @@ function detectOneHandSign(lm) {
   // ☝️ HELLO: index finger up, others down
   if (indexUp && !middleUp && !ringUp && !pinkyUp) return 'hello';
 
-  // 🙏 THANK YOU: open hand near face/chin area
-  if (open && wrist.y < 0.45) return 'thank_you';
+  // 🤙 THANK YOU: pinky finger only
+  if (!indexUp && !middleUp && !ringUp && pinkyUp) return 'thank_you';
 
   // ✋ THIS IS NADIM: open hand lower (chest area)
   if (open) return 'nadim';
