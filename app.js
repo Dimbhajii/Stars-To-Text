@@ -383,17 +383,11 @@ function detectOneHandSign(lm) {
   // ☝️ HELLO: index finger up, others down
   if (indexUp && !middleUp && !ringUp && !pinkyUp) return 'hello';
 
-  // 🙏 THANK YOU: open hand near chin/face, moving downward/outward
-  if (open) {
-    const m = getMotion(0, 12);
-    if (m && wrist.y < 0.5 && m.dy > 0.03) return 'thank_you';
-  }
+  // 🙏 THANK YOU: open hand near face/chin area
+  if (open && wrist.y < 0.45) return 'thank_you';
 
-  // ✋ THIS IS NADIM: open hand on chest area, relatively still
-  if (open) {
-    const m = getMotion(0, 10);
-    if (!m || m.mag < 0.03) return 'nadim';
-  }
+  // ✋ THIS IS NADIM: open hand lower (chest area)
+  if (open) return 'nadim';
 
   // ✊ Fist: particle repulsion (no specific sign)
   if (fist) return 'fist';
