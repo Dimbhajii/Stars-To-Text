@@ -374,11 +374,14 @@ function detectOneHandSign(lm) {
   // ✌️ OKAY: peace sign — index + middle up, ring + pinky down
   if (indexUp && middleUp && !ringUp && !pinkyUp) return 'okay';
 
-  // 🤙 U SUCK: L shape — index + thumb out, others down
-  if (indexUp && !middleUp && !ringUp && !pinkyUp && thumbOut) return 'u_suck';
+  // 🤙 U SUCK: L shape — index up + thumb clearly extended sideways
+  if (indexUp && !middleUp && !ringUp && !pinkyUp && thumbOut) {
+    const thumbLateral = Math.abs(lm[4].x - lm[5].x);
+    if (thumbLateral > 0.08) return 'u_suck';
+  }
 
-  // ☝️ HELLO: one index finger only (no thumb)
-  if (indexUp && !middleUp && !ringUp && !pinkyUp && !thumbOut) return 'hello';
+  // ☝️ HELLO: index finger up, others down
+  if (indexUp && !middleUp && !ringUp && !pinkyUp) return 'hello';
 
   // 🙏 THANK YOU: open hand near chin/face, moving downward/outward
   if (open) {
