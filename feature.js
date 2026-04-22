@@ -240,10 +240,5 @@ document.getElementById('startBtn')?.addEventListener('click', () => {
 });
 document.getElementById('stopBtn')?.addEventListener('click', stopCamera);
 
-const textStyleSelect = document.getElementById('textStyleSelect');
-textStyleSelect?.addEventListener('change', (e) => {
-  drawText(displayedText);
-});
-
 startCamera();
 animate();

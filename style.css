@@ -200,21 +200,6 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   gap: 24px; align-items: start;
 }
 .settings-panel h3 { font-size: 0.97rem; font-weight: 700; color: var(--navy); margin-bottom: 18px; }
-.settings-panel label {
-  display: block; font-size: 0.82rem; font-weight: 700;
-  color: #374151; margin-bottom: 6px;
-}
-.settings-panel select {
-  width: 100%; border: 1px solid var(--border); border-radius: 8px;
-  padding: 10px 12px; font: inherit; font-size: 0.88rem;
-  background: #fff; color: var(--navy); margin-bottom: 14px;
-  appearance: none; cursor: pointer;
-}
-.settings-note {
-  margin-top: 4px; padding: 12px 14px; border-radius: 8px;
-  background: rgba(100,255,218,0.08); color: #0d6659;
-  font-size: 0.83rem; line-height: 1.55;
-}
 .legend-box { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
 .legend-box strong { font-size: 0.82rem; color: var(--navy); }
 .legend-box ul { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
