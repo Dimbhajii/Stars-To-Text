@@ -21,6 +21,7 @@
         <a href="pricing.html">Pricing</a>
         <a href="about.html">About Us</a>
         <a href="contact.html" class="active">Contact Us</a>
+        <a href="login.html">Login</a>
       </nav>
       <a class="btn btn-primary" href="feature.html">Try It Now</a>
     </div>
@@ -42,25 +43,25 @@
             <form class="cform">
               <div class="form-row-2">
                 <div class="form-field">
-                  <label>Full Name <span>*</span></label>
-                  <input type="text" placeholder="John Doe" required />
+                  <label for="fullName">Full Name <span>*</span></label>
+                  <input id="fullName" type="text" placeholder="John Doe" required />
                 </div>
                 <div class="form-field">
-                  <label>Email Address <span>*</span></label>
-                  <input type="email" placeholder="john@example.com" required />
+                  <label for="emailAddr">Email Address <span>*</span></label>
+                  <input id="emailAddr" type="email" placeholder="john@example.com" required />
                 </div>
               </div>
               <div class="form-field">
-                <label>Phone Number</label>
-                <input type="tel" placeholder="+44 123 456 7890" />
+                <label for="phoneNum">Phone Number</label>
+                <input id="phoneNum" type="tel" placeholder="+44 123 456 7890" />
               </div>
               <div class="form-field">
-                <label>Subject <span>*</span></label>
-                <input type="text" placeholder="How can we help?" required />
+                <label for="subject">Subject <span>*</span></label>
+                <input id="subject" type="text" placeholder="How can we help?" required />
               </div>
               <div class="form-field">
-                <label>Message <span>*</span></label>
-                <textarea rows="6" placeholder="Tell us more about your inquiry…" required></textarea>
+                <label for="message">Message <span>*</span></label>
+                <textarea id="message" rows="6" placeholder="Tell us more about your inquiry…" required></textarea>
               </div>
               <button type="submit" class="btn btn-dark full">Send Message</button>
             </form>
@@ -136,8 +137,8 @@
         </div>
         <div class="footer-col">
           <h4>Legal</h4>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
         </div>
       </div>
       <div class="footer-bottom">© 2026 Sign2Text. All rights reserved.</div>

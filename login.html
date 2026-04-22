@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign2Text | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Internal CSS -->
+  <style>
+    .login-wrapper {
+      min-height: calc(100vh - 72px - 180px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      background: var(--bg);
+    }
+    .login-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 40px rgba(10,25,47,0.12);
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .login-logo span {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    .login-logo span em {
+      color: var(--cyan);
+      font-style: normal;
+    }
+    .login-card h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .login-card .sub {
+      text-align: center;
+      font-size: 0.87rem;
+      color: #64748b;
+      margin-bottom: 28px;
+    }
+    .login-footer-text {
+      text-align: center;
+      font-size: 0.84rem;
+      color: #64748b;
+      margin-top: 20px;
+    }
+    .login-footer-text a {
+      color: var(--navy);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .divider-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: #94a3b8;
+      font-size: 0.82rem;
+    }
+    .divider-text::before,
+    .divider-text::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .forgot-link {
+      font-size: 0.82rem;
+      color: var(--navy);
+      font-weight: 600;
+      text-align: right;
+      display: block;
+      margin-top: 4px;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" href="index.html">Sign<span>2Text</span></a>
+      <nav class="main-nav">
+        <a href="feature.html">Features</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="research.html">Our Research</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="login.html" class="active">Login</a>
+      </nav>
+      <a class="btn btn-primary" href="feature.html">Get Started</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="login-wrapper">
+      <div class="login-card">
+
+        <div class="login-logo">
+          <span>Sign<em>2Text</em></span>
+        </div>
+
+        <h1>Welcome back</h1>
+        <p class="sub">Sign in to your account to continue</p>
+
+        <form class="cform" action="#" method="post">
+          <div class="form-field">
+            <label for="loginEmail">Email Address <span>*</span></label>
+            <input id="loginEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-field">
+            <label for="loginPassword">Password <span>*</span></label>
+            <input id="loginPassword" type="password" placeholder="••••••••" required />
+            <a class="forgot-link" href="contact.html">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-dark full" style="margin-top:8px;">Sign In</button>
+        </form>
+
+        <div class="divider-text">or</div>
+
+        <a class="btn btn-secondary full" href="contact.html">Create a new account</a>
+
+        <p class="login-footer-text">
+          By signing in you agree to our
+          <a href="terms.html">Terms of Service</a> and
+          <a href="privacy.html">Privacy Policy</a>.
+        </p>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="index.html">Sign<span>2Text</span></a>
+          <p class="footer-tagline">Making workplaces accessible for deaf and hard of hearing individuals.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="feature.html">Features</a>
+          <a href="instructions.html">Instructions</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="about.html">About Us</a>
+          <a href="research.html">Our Research</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Sign2Text. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
