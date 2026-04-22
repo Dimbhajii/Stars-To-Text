@@ -117,6 +117,8 @@
           <span>Sign<em>2Text</em></span>
         </div>
 
+        <!-- Login page illustration -->
+        <img src="Images/img1.gif" alt="Sign language hand gesture" style="width:90px;height:auto;display:block;margin:0 auto 16px;border-radius:50%;border:2px solid var(--border);" />
         <h1>Welcome back</h1>
         <p class="sub">Sign in to your account to continue</p>
 
@@ -176,5 +178,43 @@
     </div>
   </footer>
 
+
+  <script>
+    /* JavaScript validation for the login form */
+    document.querySelector('.cform').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var email = document.getElementById('loginEmail').value.trim();
+      var pass  = document.getElementById('loginPassword').value.trim();
+
+      /* Check both fields are filled */
+      if (!email || !pass) {
+        alert('Please enter both your email address and password.');
+        return;
+      }
+
+      /* Basic email format check */
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      /* Password length check */
+      if (pass.length < 6) {
+        alert('Password must be at least 6 characters.');
+        return;
+      }
+
+      /* Show success confirmation */
+      document.querySelector('.login-card').innerHTML =
+        '<div style="text-align:center;padding:48px 24px;">' +
+        '<img src="Images/img1.gif" alt="Welcome" style="width:80px;border-radius:50%;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto;" />' +
+        '<h2 style="color:var(--navy);margin-bottom:10px;">Welcome back!</h2>' +
+        '<p style="color:#475569;font-size:0.9rem;">You are now signed in to Sign2Text.</p>' +
+        '<a class="btn btn-dark" href="feature.html" style="margin-top:20px;display:inline-block;">Go to Translator</a>' +
+        '</div>';
+    });
+  </script>
 </body>
 </html>

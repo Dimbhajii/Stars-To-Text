@@ -70,6 +70,8 @@
           <!-- Info -->
           <div>
             <div class="card contact-info-card">
+              <!-- Illustration of people communicating -->
+              <img src="Images/img2.png" alt="People communicating with sign language technology" style="width:100%;border-radius:10px;margin-bottom:18px;display:block;" />
               <h3>Get in touch</h3>
               <p style="font-size:0.88rem;color:#475569;margin-bottom:20px;">We're here to help and answer any questions you might have. We look forward to hearing from you.</p>
 
@@ -145,5 +147,37 @@
     </div>
   </footer>
 
+
+  <script>
+    /* JavaScript form validation for the contact form */
+    document.querySelector('.cform').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      var name    = document.getElementById('fullName').value.trim();
+      var email   = document.getElementById('emailAddr').value.trim();
+      var subject = document.getElementById('subject').value.trim();
+      var msg     = document.getElementById('message').value.trim();
+
+      /* Check all required fields are filled */
+      if (!name || !email || !subject || !msg) {
+        alert('Please fill in all required fields before submitting.');
+        return;
+      }
+
+      /* Basic email format check */
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      /* Replace form with a success message */
+      document.querySelector('.contact-form-card').innerHTML =
+        '<div style="text-align:center;padding:48px 24px;">' +
+        '<h3 style="color:var(--navy);margin-bottom:12px;">Message Sent!</h3>' +
+        '<p style="color:#475569;font-size:0.9rem;">Thank you ' + name + ', we\'ll respond within 24–48 hours.</p>' +
+        '</div>';
+    });
+  </script>
 </body>
 </html>
