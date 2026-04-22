@@ -3,25 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galaxy Hand Tracker</title>
+  <title>Sign2Text | Sign Language to Text, Instantly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <canvas id="particleCanvas"></canvas>
-  <video id="webcam" autoplay playsinline></video>
-  <div id="status">Initializing hand tracking...</div>
-  <div id="gesture-label"></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" href="index.html">Sign<span>2Text</span></a>
+      <nav class="main-nav">
+        <a href="feature.html">Features</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="research.html">Our Research</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+      <a class="btn btn-primary" href="feature.html">Get Started</a>
+    </div>
+  </header>
 
-  <!-- Tutorial link -->
-  <a id="tutorial-link" href="tutorial.html">?</a>
+  <main>
 
-  <!-- MediaPipe Hands via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js"></script>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="hero-pill">AI-Powered Accessibility</span>
+          <h1>Sign Language to Text, Instantly</h1>
+          <p class="hero-copy">
+            Breaking down communication barriers with real-time AI translation.
+            Empowering deaf and hard-of-hearing individuals to communicate naturally.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="feature.html">Get Started</a>
+            <a class="btn btn-outline-light" href="instructions.html">Learn More</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-sign">✋</div>
+          <p>Hand gesture recognition</p>
+        </div>
+      </div>
+    </section>
 
-  <!-- App logic -->
-  <script src="app.js"></script>
+    <!-- KEY FEATURES -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Key Features</h2>
+          <p>Simple, effective, and accessible technology designed for real-world communication</p>
+        </div>
+        <div class="cards-grid three">
+
+          <article class="card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3>Real-Time Translation</h3>
+            <p>Instant conversion of sign language gestures into readable text using advanced AI technology.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Natural Communication</h3>
+            <p>Communicate using your preferred method while the system handles the translation seamlessly.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>Inclusive Design</h3>
+            <p>Built with accessibility and inclusivity at the core, benefiting both users and businesses.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO BENEFITS -->
+    <section class="section alt">
+      <div class="container split-layout">
+        <div class="split-visual">👥</div>
+        <div>
+          <h2 style="font-size:clamp(1.7rem,3.5vw,2.2rem);color:var(--navy);margin-bottom:28px;line-height:1.15;">Who Benefits?</h2>
+          <div class="check-list">
+
+            <div class="check-item">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div>
+                <h4>Deaf &amp; Hard-of-Hearing Individuals</h4>
+                <p>Communicate confidently without relying on others to understand sign language.</p>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div>
+                <h4>Hospitality Businesses</h4>
+                <p>Improve customer service and create an inclusive environment for all customers.</p>
+              </div>
+            </div>
+
+            <div class="check-item">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div>
+                <h4>Customer Service Teams</h4>
+                <p>Provide equal service without requiring staff to learn sign language.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="index.html">Sign<span>2Text</span></a>
+          <p class="footer-tagline">Making workplaces accessible for deaf and hard of hearing individuals.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="feature.html">Features</a>
+          <a href="instructions.html">Instructions</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="about.html">About Us</a>
+          <a href="research.html">Our Research</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Sign2Text. All rights reserved.</div>
+    </div>
+  </footer>
 
 </body>
 </html>

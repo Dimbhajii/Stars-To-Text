@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign2Text | Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" href="index.html">Sign<span>2Text</span></a>
+      <nav class="main-nav">
+        <a href="feature.html">Features</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="research.html">Our Research</a>
+        <a href="pricing.html" class="active">Pricing</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+      <a class="btn btn-primary" href="contact.html">Contact Sales</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1 style="font-size:clamp(2rem,4vw,2.8rem);color:var(--navy);">Flexible pricing plans for you</h1>
+        </div>
+
+        <!-- Billing toggle -->
+        <div style="text-align:center;">
+          <div class="billing-toggle">
+            <button id="btnMonthly" class="active" onclick="setBilling('monthly')">Monthly</button>
+            <button id="btnAnnual" onclick="setBilling('annual')">Annual</button>
+          </div>
+        </div>
+
+        <!-- Pricing cards -->
+        <div class="pricing-grid">
+
+          <!-- Starter -->
+          <article class="card pricing-card">
+            <h3>Starter</h3>
+            <div class="price">
+              <span id="starterPrice">$3.98</span><span>/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Personalised Results</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 10,000 words/month</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Basic AI recognition</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Standard support</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Email support</li>
+            </ul>
+            <a class="btn btn-secondary full" href="contact.html">Subscribe</a>
+          </article>
+
+          <!-- Pro -->
+          <article class="card pricing-card featured">
+            <div class="badge">Most Popular</div>
+            <h3>Pro</h3>
+            <div class="price">
+              <span id="proPrice">$9.99</span><span>/month</span>
+            </div>
+            <ul class="pricing-features">
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Personalised Results</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 50,000 words/month</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Advanced AI recognition</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority support</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Advanced visual effects</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited file uploads</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>API access</li>
+            </ul>
+            <a class="btn btn-dark full" href="contact.html">Subscribe</a>
+          </article>
+
+          <!-- Enterprise -->
+          <article class="card pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price-contact">Contact</div>
+            <ul class="pricing-features">
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Personalised Results</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited words</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Premium AI recognition</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated support</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom AI training</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Team collaboration</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Advanced analytics</li>
+              <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>API access</li>
+            </ul>
+            <a class="btn btn-secondary full" href="contact.html">Contact Us</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="index.html">Sign<span>2Text</span></a>
+          <p class="footer-tagline">Making workplaces accessible for deaf and hard of hearing individuals.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="feature.html">Features</a>
+          <a href="instructions.html">Instructions</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="about.html">About Us</a>
+          <a href="research.html">Our Research</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Sign2Text. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    const MONTHLY = { starter: '$3.98', pro: '$9.99' };
+    const ANNUAL  = { starter: '$3.18', pro: '$7.99' };
+
+    function setBilling(mode) {
+      const prices = mode === 'annual' ? ANNUAL : MONTHLY;
+      document.getElementById('starterPrice').textContent = prices.starter;
+      document.getElementById('proPrice').textContent = prices.pro;
+      document.getElementById('btnMonthly').classList.toggle('active', mode === 'monthly');
+      document.getElementById('btnAnnual').classList.toggle('active', mode === 'annual');
+    }
+  </script>
+</body>
+</html>

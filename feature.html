@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign2Text | Features</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" href="index.html">Sign<span>2Text</span></a>
+      <nav class="main-nav">
+        <a href="feature.html" class="active">Features</a>
+        <a href="instructions.html">Instructions</a>
+        <a href="research.html">Our Research</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+      <a class="btn btn-primary" href="contact.html">Get Started</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="padding-top:40px;">
+      <div class="container">
+
+        <div class="section-head left" style="margin-bottom:24px;">
+          <h1 style="font-size:clamp(1.6rem,3vw,2.1rem);color:var(--navy);">Sign Language to Text</h1>
+          <p class="page-intro">Use your camera to detect hand gestures and transform them into animated particle text.</p>
+        </div>
+
+        <div class="feature-layout">
+
+          <!-- Translator (left) -->
+          <section class="card translator-panel">
+            <div class="translator-header">
+              <div>
+                <h2>Live Visual Translator</h2>
+                <p>Camera feed on the side — particle text fills the main frame.</p>
+              </div>
+              <a class="mini-link" href="instructions.html">How to use →</a>
+            </div>
+
+            <div id="tracker-shell">
+              <canvas id="particleCanvas"></canvas>
+              <video id="webcam" autoplay playsinline muted></video>
+              <div id="status">Initializing hand tracking…</div>
+              <div id="gesture-label"></div>
+            </div>
+
+            <div class="tracker-controls">
+              <button id="startBtn" class="btn btn-dark btn-sm">▶ Start</button>
+              <button id="stopBtn" class="btn btn-secondary btn-sm">■ Stop</button>
+            </div>
+          </section>
+
+          <!-- Settings (right) -->
+          <aside class="card settings-panel">
+            <h3>Settings</h3>
+
+            <label for="languageSelect">Sign language</label>
+            <select id="languageSelect">
+              <option>Custom Gesture Set</option>
+              <option disabled>BSL (UI only)</option>
+              <option disabled>ASL (UI only)</option>
+            </select>
+
+            <label for="textStyleSelect">Text style</label>
+            <select id="textStyleSelect">
+              <option value="glow">Glow</option>
+              <option value="bold">Bold</option>
+              <option value="soft">Soft</option>
+            </select>
+
+            <div class="settings-note">
+              Current detection uses the uploaded gesture logic. These controls are ready for future expansion.
+            </div>
+
+            <div class="legend-box">
+              <strong>Detected gestures</strong>
+              <ul>
+                <li>HELLO</li>
+                <li>THIS IS NADIM</li>
+                <li>NICE TO MEET YOU</li>
+                <li>I LOVE YOU</li>
+                <li>THANK YOU</li>
+                <li>WHAT DO YOU WANT?</li>
+                <li>OKAY!</li>
+                <li>FUCK U</li>
+                <li>U SUCK</li>
+              </ul>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="index.html">Sign<span>2Text</span></a>
+          <p class="footer-tagline">Making workplaces accessible for deaf and hard of hearing individuals.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="feature.html">Features</a>
+          <a href="instructions.html">Instructions</a>
+          <a href="pricing.html">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="about.html">About Us</a>
+          <a href="research.html">Our Research</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Sign2Text. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js"></script>
+  <script src="feature.js"></script>
+</body>
+</html>
