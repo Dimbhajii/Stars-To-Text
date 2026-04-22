@@ -183,7 +183,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 }
 .footer-brand .logo { display: inline-block; margin-bottom: 12px; }
 .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.65; max-width: 220px; }
-.footer-col h3 { color: #fff; font-size: 0.82rem; font-weight: 700; letter-spacing: .5px; margin-bottom: 14px; }
+.footer-col h2 { color: #fff; font-size: 0.82rem; font-weight: 700; letter-spacing: .5px; margin-bottom: 14px; }
 .footer-col a { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 9px; transition: color .15s; }
 .footer-col a:hover { color: var(--cyan); }
 .footer-bottom {
@@ -417,7 +417,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 
 /* ── CONTACT ─────────────────────────────────────── */
 .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
-.contact-form-card h3, .contact-info-card h3 {
+.contact-form-card h2, .contact-info-card h2 {
   font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 20px;
 }
 .cform { display: flex; flex-direction: column; gap: 14px; }
@@ -444,14 +444,14 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   width: 18px; height: 18px; stroke: var(--navy); fill: none;
   stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
-.contact-info-item h4 { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.contact-info-item h3 { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
 .contact-info-item p { font-size: 0.84rem; color: #475569; line-height: 1.55; }
 .response-box {
   margin-top: 24px; padding: 20px; background: #f8fafc;
   border: 1px solid var(--border); border-radius: 10px;
   box-shadow: var(--shadow);
 }
-.response-box h4 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+.response-box h3 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
 .response-box p { font-size: 0.84rem; color: #475569; line-height: 1.6; }
 .response-box p + p { margin-top: 8px; }
 
