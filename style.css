@@ -340,7 +340,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   padding: 28px; background: #fff;
   box-shadow: var(--shadow);
 }
-.solution-box h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.solution-box h2 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
 .solution-box p { font-size: 0.9rem; color: #374151; line-height: 1.72; }
 .benefits-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .benefit-box {
@@ -353,7 +353,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   box-shadow: var(--shadow-hover);
   transform: translateY(-3px);
 }
-.benefit-box h4 { font-size: 0.93rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.benefit-box h3 { font-size: 0.93rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
 .benefit-box ul { display: flex; flex-direction: column; gap: 8px; }
 .benefit-box li {
   font-size: 0.87rem; color: #374151;
@@ -365,7 +365,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   border-radius: 12px; padding: 40px; text-align: center;
   box-shadow: var(--shadow);
 }
-.mission-box h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+.mission-box h2 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
 .mission-box p { font-size: 0.9rem; color: #374151; line-height: 1.78; max-width: 540px; margin: 0 auto; }
 
 /* ── PRICING ─────────────────────────────────────── */
