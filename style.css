@@ -183,7 +183,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 }
 .footer-brand .logo { display: inline-block; margin-bottom: 12px; }
 .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.65; max-width: 220px; }
-.footer-col h4 { color: #fff; font-size: 0.82rem; font-weight: 700; letter-spacing: .5px; margin-bottom: 14px; }
+.footer-col h3 { color: #fff; font-size: 0.82rem; font-weight: 700; letter-spacing: .5px; margin-bottom: 14px; }
 .footer-col a { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 9px; transition: color .15s; }
 .footer-col a:hover { color: var(--cyan); }
 .footer-bottom {
@@ -308,7 +308,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   transform: translateY(-4px);
 }
 .gesture-emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
-.gesture-card h4 {
+.gesture-card h3 {
   font-size: 0.82rem; font-weight: 900; text-transform: uppercase;
   letter-spacing: .6px; color: var(--navy); margin-bottom: 6px;
 }
