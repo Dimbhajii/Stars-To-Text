@@ -17,15 +17,13 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 const GESTURE_SIGNS = {
-  hello:        'HELLO',
-  nadim:        'THIS IS NADIM',
-  nice_to_meet: 'NICE TO MEET YOU',
-  i_love_you:   'I LOVE YOU',
-  thank_you:    'THANK YOU',
+  hello:          'HELLO',
+  nadim:          'THIS IS NADIM',
+  nice_to_meet:   'NICE TO MEET YOU',
+  i_love_you:     'I LOVE YOU',
+  thank_you:      'THANK YOU',
   what_do_u_want: 'WHAT DO YOU WANT?',
-  cute:         'U r cute and yk rose',
-  fuck_u:       'FUCK U',
-  u_suck:       'U SUCK',
+  okay:           'OKAY',
 };
 
 const GESTURE_HOLD_FRAMES = 4;
@@ -75,11 +73,8 @@ function detectOneHandSign(lm) {
     landmarkDist(lm[4],lm[20]) < pinchThreshold;
 
   if (allPinched)                                  return 'what_do_u_want';
-  if (!iUp && mUp && !rUp && !pUp)                 return 'fuck_u';
   if (tOut && iUp && !mUp && !rUp && pUp)          return 'i_love_you';
-  if (iUp && mUp && !rUp && !pUp)                  return 'cute';
-  if (iUp && !mUp && !rUp && !pUp && tOut &&
-      Math.abs(lm[4].x - lm[5].x) > 0.08)         return 'u_suck';
+  if (iUp && mUp && !rUp && !pUp)                  return 'okay';
   if (iUp && !mUp && !rUp && !pUp)                 return 'hello';
   if (!iUp && !mUp && !rUp && pUp)                 return 'thank_you';
   if (iUp && mUp && rUp && pUp)                    return 'nadim';

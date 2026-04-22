@@ -244,9 +244,7 @@ const GESTURE_SIGNS = {
   i_love_you:     'I LOVE YOU',
   thank_you:      'THANK YOU',
   what_do_u_want: 'WHAT DO YOU WANT?',
-  okay:           'OKAY!',
-  fuck_u:         'FUCK U',
-  u_suck:         'U SUCK',
+  okay:           'OKAY',
 };
 
 // ─── Motion Tracking ────────────────────────────────────────────────
@@ -364,20 +362,11 @@ function detectOneHandSign(lm) {
                   && landmarkDist(lm[4], lm[20]) < pinchThreshold;
   if (allPinched) return 'what_do_u_want';
 
-  // 🖕 FUCK U: only middle finger up
-  if (!indexUp && middleUp && !ringUp && !pinkyUp) return 'fuck_u';
-
   // 🤟 I LOVE YOU: thumb + index + pinky up, middle + ring down
   if (thumbOut && indexUp && !middleUp && !ringUp && pinkyUp) return 'i_love_you';
 
   // ✌️ OKAY: peace sign — index + middle up, ring + pinky down
   if (indexUp && middleUp && !ringUp && !pinkyUp) return 'okay';
-
-  // 🤙 U SUCK: L shape — index up + thumb clearly extended sideways
-  if (indexUp && !middleUp && !ringUp && !pinkyUp && thumbOut) {
-    const thumbLateral = Math.abs(lm[4].x - lm[5].x);
-    if (thumbLateral > 0.08) return 'u_suck';
-  }
 
   // ☝️ HELLO: index finger up, others down
   if (indexUp && !middleUp && !ringUp && !pinkyUp) return 'hello';
