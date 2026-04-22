@@ -9,8 +9,9 @@
   --bg: #f8fafc;
   --card-bg: #ffffff;
   --border: #e2e8f0;
-  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.05);
-  --shadow-lg: 0 8px 32px rgba(10,25,47,0.12);
+  --shadow: 0 2px 8px rgba(0,0,0,0.08), 0 6px 20px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 40px rgba(10,25,47,0.16);
+  --shadow-hover: 0 8px 28px rgba(0,0,0,0.14), 0 16px 48px rgba(10,25,47,0.12);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,6 +34,7 @@ ul { list-style: none; }
   position: sticky; top: 0; z-index: 100;
   background: var(--navy);
   border-bottom: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
 }
 .nav-wrap {
   min-height: 72px;
@@ -92,6 +94,11 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .card {
   background: var(--card-bg); border: 1px solid var(--border);
   border-radius: 12px; padding: 28px; box-shadow: var(--shadow);
+  transition: box-shadow .22s, transform .22s;
+}
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
 }
 .cards-grid { display: grid; gap: 24px; }
 .cards-grid.three { grid-template-columns: repeat(3, 1fr); }
@@ -129,11 +136,16 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
 .hero-visual {
   display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
 }
 .hero-gif {
-  width: 100%; max-width: 420px; height: auto;
-  border-radius: 16px;
-  filter: drop-shadow(0 0 32px rgba(100,255,218,0.22));
+  width: 100%; max-width: 360px; height: auto;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 20px rgba(100,255,218,0.18));
 }
 
 /* ── WHO BENEFITS ────────────────────────────────── */
@@ -142,12 +154,16 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   gap: 64px; align-items: center;
 }
 .split-visual {
-  border-radius: 16px; overflow: hidden;
+  border-radius: 20px; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  padding: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 .benefits-img {
   width: 100%; height: auto; display: block;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 .check-list { display: flex; flex-direction: column; gap: 24px; }
 .check-item { display: flex; gap: 14px; align-items: flex-start; }
@@ -262,6 +278,12 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   display: flex; gap: 16px; align-items: flex-start;
   background: #fff; border: 1px solid var(--border);
   border-radius: 10px; padding: 18px 20px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .22s, transform .22s;
+}
+.step-item:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
 }
 .step-num {
   width: 32px; height: 32px; flex-shrink: 0;
@@ -278,6 +300,12 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .gesture-card {
   background: #fff; border: 1px solid var(--border);
   border-radius: 12px; padding: 22px 18px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .22s, transform .22s;
+}
+.gesture-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
 }
 .gesture-emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
 .gesture-card h4 {
@@ -290,6 +318,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   background: #fff; border: 1px solid var(--border);
   border-radius: 12px; padding: 28px 32px;
   max-width: 660px; margin: 0 auto;
+  box-shadow: var(--shadow);
 }
 .tips-box ul { display: flex; flex-direction: column; gap: 10px; }
 .tips-box li {
@@ -309,6 +338,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .solution-box {
   border: 1px solid var(--border); border-radius: 12px;
   padding: 28px; background: #fff;
+  box-shadow: var(--shadow);
 }
 .solution-box h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
 .solution-box p { font-size: 0.9rem; color: #374151; line-height: 1.72; }
@@ -316,6 +346,12 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .benefit-box {
   background: #fff; border: 1px solid var(--border);
   border-radius: 12px; padding: 24px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .22s, transform .22s;
+}
+.benefit-box:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
 }
 .benefit-box h4 { font-size: 0.93rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
 .benefit-box ul { display: flex; flex-direction: column; gap: 8px; }
@@ -327,6 +363,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .mission-box {
   background: #fff; border: 1px solid var(--border);
   border-radius: 12px; padding: 40px; text-align: center;
+  box-shadow: var(--shadow);
 }
 .mission-box h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
 .mission-box p { font-size: 0.9rem; color: #374151; line-height: 1.78; max-width: 540px; margin: 0 auto; }
@@ -348,7 +385,14 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 24px; max-width: 860px; margin: 0 auto;
 }
-.pricing-card { position: relative; }
+.pricing-card {
+  position: relative;
+  transition: box-shadow .22s, transform .22s;
+}
+.pricing-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-5px);
+}
 .pricing-card .badge {
   display: inline-block; margin-bottom: 10px;
   background: var(--navy); color: var(--cyan);
@@ -405,6 +449,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); }
 .response-box {
   margin-top: 24px; padding: 20px; background: #f8fafc;
   border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: var(--shadow);
 }
 .response-box h4 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
 .response-box p { font-size: 0.84rem; color: #475569; line-height: 1.6; }
